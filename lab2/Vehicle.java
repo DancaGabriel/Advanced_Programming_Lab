@@ -1,11 +1,15 @@
 package lab2;
 // Dancă Gabriel E2
 
-public class Vehicle {
-    private String model;
+import java.util.Objects;
+
+public abstract class Vehicle {
+    protected String model;
     Depot depotVehicle;
-    private int startingDepot;
-    private int visitedClients;
+    protected int startingDepot;
+    protected int visitedClients;
+
+    Vehicle(){}
 
     Vehicle(String name,int start,int clients,Depot depou){
         this.model = name;
@@ -21,6 +25,19 @@ public class Vehicle {
                 "model='" + model + '\'' +
                 ", startingDepot=" + startingDepot +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return startingDepot == vehicle.startingDepot && visitedClients == vehicle.visitedClients && Objects.equals(model, vehicle.model) && Objects.equals(depotVehicle, vehicle.depotVehicle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, depotVehicle, startingDepot, visitedClients);
     }
 
     public String getName() {
@@ -41,5 +58,6 @@ public class Vehicle {
     public String getDepot(){
         return this.depotVehicle.getDepotName();
     }
-
 }
+
+

@@ -3,6 +3,8 @@ package lab2;
 
 
 import java.util.ArrayList;
+import java.util.Objects;
+
 public class Depot {
     private ArrayList<Vehicle> vehicleList = new ArrayList<>();
     private int number;
@@ -21,7 +23,20 @@ public class Depot {
                 '}';
     }
 
-    public ArrayList<Vehicle> getVehicleListList() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Depot depot = (Depot) o;
+        return number == depot.number && Objects.equals(vehicleList, depot.vehicleList) && Objects.equals(depotName, depot.depotName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vehicleList, number, depotName);
+    }
+
+    public ArrayList<Vehicle> getVehicleList() {
         return vehicleList;
     }
 
@@ -31,6 +46,8 @@ public class Depot {
 
     public void addVehicle(Vehicle car){
         vehicleList.add(car);
+        System.out.println("Vehiculul adaugat este:" + car.getName());
+        System.out.println(vehicleList);
     }
 
     public String getDepotName(){
