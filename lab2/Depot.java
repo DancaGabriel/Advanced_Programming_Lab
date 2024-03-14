@@ -2,55 +2,62 @@ package lab2;
 // Dancă Gabriel E2
 
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Depot {
-    private ArrayList<Vehicle> vehicleList = new ArrayList<>();
-    private int number;
-    private String depotName;
+    private String name;
+    private Vehicle[] vehicles;
 
-    Depot(int depotNum,String name){
-        this.number = depotNum;
-        this.depotName = name;
+    public Depot() {}
+    public Depot(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setVehicles(Vehicle... vehicles) {
+        this.vehicles = vehicles;
+        for (Vehicle v : vehicles) {
+            v.setDepot(this);
+        }
+    }
+
+    public Vehicle[] getVehicles() {
+        return vehicles;
     }
 
     @Override
     public String toString() {
+        StringBuilder names = new StringBuilder();
+        for (Vehicle v : vehicles) {
+            names.append(v.getName());
+            names.append(", ");
+        }
+
+        names.delete(names.length()-2, names.length());
         return "Depot{" +
-                "vehicleList=" + vehicleList +
-                ", number=" + number +
+                "name='" + name + '\'' +
+                ", vehicles=" + names.toString() +
                 '}';
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Depot depot = (Depot) o;
-        return number == depot.number && Objects.equals(vehicleList, depot.vehicleList) && Objects.equals(depotName, depot.depotName);
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Depot depot = (Depot) obj;
+        return Objects.equals(name, depot.name) && Arrays.equals(vehicles, depot.vehicles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vehicleList, number, depotName);
-    }
-
-    public ArrayList<Vehicle> getVehicleList() {
-        return vehicleList;
-    }
-
-    public void setCarsList(ArrayList<Vehicle> carsList) {
-        this.vehicleList = carsList;
-    }
-
-    public void addVehicle(Vehicle car){
-        vehicleList.add(car);
-        System.out.println("Vehiculul adaugat este:" + car.getName());
-        System.out.println(vehicleList);
-    }
-
-    public String getDepotName(){
-        return this.depotName;
+        int result = Objects.hash(name);
+        result = 31 * result + Arrays.hashCode(vehicles);
+        return result;
     }
 }

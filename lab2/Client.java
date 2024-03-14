@@ -1,32 +1,62 @@
 package lab2;
-// Dancă Gabriel E2
+// Danca Gabriel 2E2
 
+import java.time.LocalTime;
 import java.util.Objects;
 
+enum ClientType {
+    REGULAR,
+    PREMIUM;
+}
+
+/**
+ * The class Client defines a client
+ */
 public class Client {
-     private String name;
-     private int startingTime,endingTime;
-     public enum TYPE{
-        PREMIUM,
-        REGULAR
+    private String name;
+    private LocalTime minTime;
+    private LocalTime maxTime;
+    private ClientType type;
+
+    public Client() {}
+    public Client(String name) {
+        this(name, null, null, null);
     }
-    public TYPE type;
 
-
-    Client(TYPE type, String name, int start, int end) {
-        this.type = type;
+    public Client(String name, LocalTime minTime, LocalTime maxTime, ClientType type) {
         this.name = name;
-        this.startingTime = start;
-        this.endingTime = end;
+        this.minTime = minTime;
+        this.maxTime = maxTime;
+        this.type = type;
+    }
 
+    public Client(String name, ClientType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setMinTime(LocalTime minTime) {
+        this.minTime = minTime;
+    }
+    public void setMaxTime(LocalTime maxTime) {
+        this.maxTime = maxTime;
+    }
+    public void setType (ClientType type) {
+        this.type = type;
     }
 
     @Override
     public String toString() {
         return "Client{" +
                 "name='" + name + '\'' +
-                ", startInterval=" + startingTime +
-                ", endInterval=" + endingTime +
+                ", minTime=" + minTime +
+                ", maxTime=" + maxTime +
                 ", type=" + type +
                 '}';
     }
@@ -36,35 +66,11 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return startingTime == client.startingTime && endingTime == client.endingTime && Objects.equals(name, client.name) && type == client.type;
+        return Objects.equals(name, client.name) && Objects.equals(minTime, client.minTime) && Objects.equals(maxTime, client.maxTime) && type == client.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, startingTime, endingTime, type);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getStartInterval() {
-        return startingTime;
-    }
-
-    public int getEndInterval() {
-        return endingTime;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setStartInterval(int startInterval) {
-        this.startingTime = startInterval;
-    }
-
-    public void setEndInterval(int endInterval) {
-        this.endingTime = endInterval;
+        return Objects.hash(name, minTime, maxTime, type);
     }
 }

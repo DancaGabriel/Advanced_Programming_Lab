@@ -4,59 +4,45 @@ package lab2;
 import java.util.Objects;
 
 public abstract class Vehicle {
-    protected String model;
-    Depot depotVehicle;
-    protected int startingDepot;
-    protected int visitedClients;
+    protected String name;
+    protected Depot depot;
 
-    Vehicle(){}
+    protected Vehicle() {}
+    /*protected Vehicle(String name) {
+        this.name = name;
+    }*/
 
-    Vehicle(String name,int start,int clients,Depot depou){
-        this.model = name;
-        this.startingDepot = start;
-        this.visitedClients = clients;
-        depou.addVehicle(this);
-        this.depotVehicle = depou;
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDepot(Depot depot) {
+        this.depot = depot;
     }
 
     @Override
     public String toString() {
         return "Vehicle{" +
-                "model='" + model + '\'' +
-                ", startingDepot=" + startingDepot +
+                "name='" + name + '\'' +
+                ", depot=" + depot +
                 '}';
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return startingDepot == vehicle.startingDepot && visitedClients == vehicle.visitedClients && Objects.equals(model, vehicle.model) && Objects.equals(depotVehicle, vehicle.depotVehicle);
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Vehicle vehicle = (Vehicle) obj;
+        return Objects.equals(name, vehicle.name) && Objects.equals(depot, vehicle.depot);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(model, depotVehicle, startingDepot, visitedClients);
-    }
-
-    public String getName() {
-        return model;
-    }
-
-    public void setName(String name) {
-        this.model = name;
-    }
-
-    public int getStartingDepot() {
-        return startingDepot;
-    }
-
-    public void setStartingDepot(int startingDepot) {
-        this.startingDepot = startingDepot;
-    }
-    public String getDepot(){
-        return this.depotVehicle.getDepotName();
+        return Objects.hash(name, depot);
     }
 }
 
