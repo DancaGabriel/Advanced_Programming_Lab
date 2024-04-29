@@ -1,36 +1,42 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class AuthorDAO {
     public void create(String name) throws SQLException {
         Connection con = Database.getConnection();
         try (PreparedStatement pstmt = con.prepareStatement(
-                "insert into authors (name) values (?)")) {
+                "INSERT INTO collection (autor) VALUES (?)")) {
             pstmt.setString(1, name);
             pstmt.executeUpdate();
+            System.out.println("Autorul a fost adăugat cu succes în baza de date.");
         }
     }
-    public static Integer findByName(String name) throws SQLException {
+
+    public ResultSet findByName(String name) throws SQLException {
         Connection con = Database.getConnection();
-        try (Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(
-                     "select id from authors where name='" + name + "'")) {
-            return rs.next() ? rs.getInt(1) : null;
+        PreparedStatement pstmt = con.prepareStatement(
+                "SELECT autor, titlu FROM collection WHERE autor = ?");
+        pstmt.setString(1, name);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            String autor = rs.getString("autor");
+            String titlu = rs.getString("titlu");
+            System.out.println("Autor: " + autor + ", Titlu: " + titlu);
         }
+        return rs;
     }
+
     public String findById(int id) throws SQLException {
         Connection con = Database.getConnection();
-        try (PreparedStatement stmt = con.prepareStatement(
-                "SELECT author_name FROM authors WHERE author_id = ?")) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next() ? rs.getString("author_name") : null;
-            }
+        PreparedStatement pstmt = con.prepareStatement(
+                "SELECT titlu FROM collection WHERE id = ?");
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            return rs.getString("titlu");
+        } else {
+            return null;
         }
     }
 
