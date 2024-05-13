@@ -13,6 +13,7 @@ public class Main {
             authors.create("Mihail Sebastian");
             var genres = new GenreDAO();
             genres.create("Tragedy");
+            genres.findByCategory("Tragedy");
             var books = new BookDAO();
             books.create(1597, "Romeo and Juliet", "William Shakespeare", "Tragedy");
             books.create(1979, "The Hitchhiker's Guide to the Galaxy",

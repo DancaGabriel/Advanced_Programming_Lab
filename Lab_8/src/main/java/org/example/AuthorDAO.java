@@ -13,28 +13,39 @@ public class AuthorDAO {
         }
     }
 
-    public ResultSet findByName(String name) throws SQLException {
+    public Carte findByName(String name) throws SQLException {
         Connection con = Database.getConnection();
         PreparedStatement pstmt = con.prepareStatement(
-                "SELECT autor, titlu FROM collection WHERE autor = ?");
+                "SELECT * FROM collection WHERE autor = ?");
         pstmt.setString(1, name);
         ResultSet rs = pstmt.executeQuery();
-        while (rs.next()) {
-            String autor = rs.getString("autor");
-            String titlu = rs.getString("titlu");
-            System.out.println("Autor: " + autor + ", Titlu: " + titlu);
+        if (rs.next()) {
+            Carte carte = new Carte(rs.getInt("Id"),
+                    rs.getString("autor"),
+                    rs.getString("titlu"),
+                    rs.getDouble("average_rating"),
+                    rs.getInt("An"),
+                    rs.getString("Categorie"));
+            return carte;
+        } else {
+            return null;
         }
-        return rs;
     }
 
-    public String findById(int id) throws SQLException {
+    public Carte findById(int id) throws SQLException {
         Connection con = Database.getConnection();
         PreparedStatement pstmt = con.prepareStatement(
-                "SELECT titlu FROM collection WHERE id = ?");
+                "SELECT * FROM collection WHERE Id = ?");
         pstmt.setInt(1, id);
         ResultSet rs = pstmt.executeQuery();
         if (rs.next()) {
-            return rs.getString("titlu");
+            Carte carte = new Carte(rs.getInt("Id"),
+                    rs.getString("autor"),
+                    rs.getString("titlu"),
+                    rs.getDouble("average_rating"),
+                    rs.getInt("An"),
+                    rs.getString("Categorie"));
+            return carte;
         } else {
             return null;
         }

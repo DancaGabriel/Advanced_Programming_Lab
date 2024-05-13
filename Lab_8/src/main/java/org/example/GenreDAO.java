@@ -13,28 +13,40 @@ public class GenreDAO {
         }
     }
 
-    public ResultSet findByCategory(String category) throws SQLException {
+    public Carte findByCategory(String category) throws SQLException {
         Connection con = Database.getConnection();
         PreparedStatement pstmt = con.prepareStatement(
                 "SELECT * FROM collection WHERE Categorie = ?");
         pstmt.setString(1, category);
         ResultSet rs = pstmt.executeQuery();
-        while (rs.next()) {
-            int id = rs.getInt("Id");
-            String categoryName = rs.getString("Categorie");
-            System.out.println("Id: " + id + ", Categorie: " + categoryName);
+        if (rs.next()) {
+            Carte carte = new Carte(rs.getInt("Id"),
+                    rs.getString("autor"),
+                    rs.getString("titlu"),
+                    rs.getDouble("average_rating"),
+                    rs.getInt("An"),
+                    rs.getString("Categorie"));
+            return carte;
+        } else {
+            return null;
         }
-        return rs;
     }
 
-    public String findById(int id) throws SQLException {
+    public Carte findById(int id) throws SQLException {
         Connection con = Database.getConnection();
         PreparedStatement pstmt = con.prepareStatement(
-                "SELECT Categorie FROM collection WHERE Id = ?");
+                "SELECT * FROM collection WHERE Id = ?");
         pstmt.setInt(1, id);
         ResultSet rs = pstmt.executeQuery();
         if (rs.next()) {
-            return rs.getString("Categorie");
+            // Construim obiectul Carte folosind valorile din ResultSet
+            Carte carte = new Carte(rs.getInt("Id"),
+                    rs.getString("autor"),
+                    rs.getString("titlu"),
+                    rs.getDouble("average_rating"),
+                    rs.getInt("An"),
+                    rs.getString("Categorie"));
+            return carte;
         } else {
             return null;
         }

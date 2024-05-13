@@ -16,20 +16,23 @@ public class BookDAO {
         }
     }
 
-    public ResultSet findByName(String name) throws SQLException {
+    public Carte findByName(String name) throws SQLException {
         Connection con = Database.getConnection();
         PreparedStatement pstmt = con.prepareStatement(
                 "SELECT * FROM collection WHERE Titlu = ?");
         pstmt.setString(1, name);
         ResultSet rs = pstmt.executeQuery();
-        while (rs.next()) {
-            int year = rs.getInt("An");
-            String title = rs.getString("Titlu");
-            String author = rs.getString("Autor");
-            String genre = rs.getString("Categorie");
-            System.out.println("An: " + year + ", Titlu: " + title + ", Autor: " + author + ", Categorie: " + genre);
+        if (rs.next()) {
+            Carte carte = new Carte(rs.getInt("Id"),
+                    rs.getString("Autor"),
+                    rs.getString("Titlu"),
+                    rs.getDouble("average_rating"),
+                    rs.getInt("An"),
+                    rs.getString("Categorie"));
+            return carte;
+        } else {
+            return null;
         }
-        return rs;
     }
 
     public static void closeConnection() {
